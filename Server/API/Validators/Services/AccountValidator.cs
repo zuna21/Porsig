@@ -1,10 +1,14 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API;
 
-public class AccountValidator : IAccountValidator
+public class AccountValidator(
+    UserManager<AppUser> userManager
+) : IAccountValidator
 {
-    public ValidatorResult RegisterUser(RegisterDto registerDto)
+    private readonly UserManager<AppUser> _userManager = userManager;
+    public async Task<ValidatorResult> RegisterUser(RegisterDto registerDto)
     {
         ValidatorResult validatorResult = new();
         if (registerDto == null)
@@ -39,6 +43,14 @@ public class AccountValidator : IAccountValidator
         {
             validatorResult.IsValidate = false;
             validatorResult.Message = "Please enter valid email address.";
+            return validatorResult;
+        }
+
+        var user = await _userManager.FindByNameAsync(registerDto.Username.ToLower());
+        if (user != null)
+        {
+            validatorResult.IsValidate = false;
+            validatorResult.Message = "Username is taken.";
             return validatorResult;
         }
 

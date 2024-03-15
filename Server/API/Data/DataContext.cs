@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace API;
 
 public class DataContext(
     IConfiguration configuration
-) : DbContext
+) : IdentityDbContext<AppUser, IdentityRole<int>, int>
 {
     private readonly IConfiguration _configuration = configuration;
 
@@ -14,5 +16,4 @@ public class DataContext(
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("PorsigDatabase"));
     }
 
-    public DbSet<AppUser> Users { get; set; }
 }

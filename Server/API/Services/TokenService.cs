@@ -9,7 +9,7 @@ public class TokenService : ITokenService
 {
     public string GenerateAccessToken(IEnumerable<Claim> claims)
     {
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("qwertyuiopplkjhgfdsazxcvbnmlkjhgfdsa"));
         var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
         var tokeOptions = new JwtSecurityToken(
             claims: claims,

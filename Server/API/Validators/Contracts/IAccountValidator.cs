@@ -2,5 +2,5 @@
 
 public interface IAccountValidator
 {
-    ValidatorResult RegisterUser(RegisterDto registerDto);
+    Task<ValidatorResult> RegisterUser(RegisterDto registerDto);
 }
