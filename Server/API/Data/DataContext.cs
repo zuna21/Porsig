@@ -18,5 +18,5 @@ public class DataContext(
 
     public DbSet<Group> Groups { get; set; }
     public DbSet<UserGroup> UserGroups { get; set; }
-
+    public DbSet<Message> Messages { get; set; }
 }

@@ -17,13 +17,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
         .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddScoped<IAccountValidator, AccountValidator>();
-builder.Services.AddScoped<IGroupValidator, GroupValidator>();
 
 var app = builder.Build();
 
@@ -34,7 +32,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseAuthorization();
 
