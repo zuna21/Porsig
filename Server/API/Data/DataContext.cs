@@ -16,4 +16,7 @@ public class DataContext(
         optionsBuilder.UseNpgsql(_configuration.GetConnectionString("PorsigDatabase"));
     }
 
+    public DbSet<Group> Groups { get; set; }
+    public DbSet<UserGroup> UserGroups { get; set; }
+
 }

@@ -16,10 +16,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
         .AddEntityFrameworkStores<DataContext>()
         .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IAccountValidator, AccountValidator>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+builder.Services.AddScoped<IAccountValidator, AccountValidator>();
+builder.Services.AddScoped<IGroupValidator, GroupValidator>();
 
 var app = builder.Build();
 
