@@ -5,13 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API;
 
-[ApiController]
-[Route("api/[controller]")]
 public class AccountController(
     IAccountValidator accountValidator,
     ITokenService tokenService,
     UserManager<AppUser> userManager
-) : ControllerBase
+) : BaseController
 {
     private readonly IAccountValidator _accountValidator = accountValidator;
     private readonly UserManager<AppUser> _userManager = userManager;

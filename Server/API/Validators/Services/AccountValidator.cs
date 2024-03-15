@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API;
 
@@ -19,14 +18,14 @@ public class AccountValidator(
             return validatorResult;
         }
 
-        if (loginDto.Username.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(loginDto.Username))
         {
             validatorResult.IsValidate = false;
             validatorResult.Message = "Please enter valid username.";
             return validatorResult;
         }
 
-        if (loginDto.Password.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(loginDto.Password))
         {
             validatorResult.IsValidate = false;
             validatorResult.Message = "Please enter valid password.";
@@ -48,14 +47,14 @@ public class AccountValidator(
             return validatorResult;
         }
 
-        if (registerDto.Username.IsNullOrEmpty() || registerDto.Username!.Length < 4)
+        if (string.IsNullOrEmpty(registerDto.Username) || registerDto.Username!.Length < 4)
         {
             validatorResult.IsValidate = false;
             validatorResult.Message = "Username need to have at least 4 characters.";
             return validatorResult;
         }
 
-        if (registerDto.Password.IsNullOrEmpty() || registerDto.Password!.Length < 8)
+        if (string.IsNullOrEmpty(registerDto.Password) || registerDto.Password!.Length < 8)
         {
             validatorResult.IsValidate = false;
             validatorResult.Message = "Password need to have at least 8 characters.";
@@ -69,7 +68,7 @@ public class AccountValidator(
             return validatorResult;
         }
 
-        if (registerDto.Email.IsNullOrEmpty() || !registerDto.Email!.Contains('@'))
+        if (string.IsNullOrEmpty(registerDto.Email) || !registerDto.Email!.Contains('@'))
         {
             validatorResult.IsValidate = false;
             validatorResult.Message = "Please enter valid email address.";
