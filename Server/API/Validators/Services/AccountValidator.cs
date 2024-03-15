@@ -8,6 +8,36 @@ public class AccountValidator(
 ) : IAccountValidator
 {
     private readonly UserManager<AppUser> _userManager = userManager;
+
+    public ValidatorResult LoginUser(LoginDto loginDto)
+    {
+        ValidatorResult validatorResult = new();
+        if (loginDto == null)
+        {
+            validatorResult.IsValidate = false;
+            validatorResult.Message = "Please enter valid information.";
+            return validatorResult;
+        }
+
+        if (loginDto.Username.IsNullOrEmpty())
+        {
+            validatorResult.IsValidate = false;
+            validatorResult.Message = "Please enter valid username.";
+            return validatorResult;
+        }
+
+        if (loginDto.Password.IsNullOrEmpty())
+        {
+            validatorResult.IsValidate = false;
+            validatorResult.Message = "Please enter valid password.";
+            return validatorResult;
+        }
+
+        validatorResult.IsValidate = true;
+        validatorResult.Message = "Valid.";
+        return validatorResult;
+    }
+
     public async Task<ValidatorResult> RegisterUser(RegisterDto registerDto)
     {
         ValidatorResult validatorResult = new();

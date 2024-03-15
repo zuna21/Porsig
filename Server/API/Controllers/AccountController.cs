@@ -45,9 +45,41 @@ public class AccountController(
 
         return new AccountDto
         {
-            Id = user.Id,
             Username = user.UserName,
             Token = _tokenService.GenerateAccessToken(claims)
+        };
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<AccountDto>> Login(LoginDto loginDto)
+    {
+        ValidatorResult validatorResult = _accountValidator.LoginUser(loginDto);
+        if (!validatorResult.IsValidate)
+        {
+            return BadRequest(validatorResult.Message);
+        }
+
+        var user = await _userManager.FindByNameAsync(loginDto.Username!.ToLower());
+        if (user == null)
+        {
+            return Unauthorized("Invalid username or password.");
+        }
+
+        var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, loginDto.Password!);
+        if (!isPasswordCorrect)
+        {
+            return Unauthorized("Invalid username or password.");
+        }
+
+        List<Claim> claims = new()
+        {
+            new(JwtRegisteredClaimNames.NameId, user.UserName!)
+        };
+
+        return new AccountDto
+        {
+            Token = _tokenService.GenerateAccessToken(claims),
+            Username = user.UserName
         };
     }
 }
