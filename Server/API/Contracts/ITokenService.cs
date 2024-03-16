@@ -4,5 +4,5 @@ namespace API;
 
 public interface ITokenService
 {
-    string GenerateAccessToken(IEnumerable<Claim> claims);
+    string GenerateAccessToken(AppUser user);
 }

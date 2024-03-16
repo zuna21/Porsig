@@ -1,4 +1,5 @@
 ﻿
+
 namespace API;
 
 public class GroupRepository(
@@ -10,6 +11,11 @@ public class GroupRepository(
     public void AddGroup(Group group)
     {
         _context.Groups.Add(group);
+    }
+
+    public void AddGroupParticipants(ICollection<UserGroup> userGroups)
+    {
+        _context.UserGroups.AddRange(userGroups);
     }
 
     public async Task<bool> SaveAllAsync()

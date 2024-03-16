@@ -18,11 +18,78 @@ public class GroupsController(
 
 
     [HttpPost("create")]
-    public void Create(CreateGroupDto createGroupDto)
+    public async Task<ActionResult<GroupDto>> Create(CreateGroupDto createGroupDto)
     {
-        var user = _globals.GetCurrentUsername();
-        Console.WriteLine(user);
-        
+        ValidatorResult validatorResult = _groupValidator.Create(createGroupDto);
+        if (!validatorResult.IsValidate)
+        {
+            return BadRequest(validatorResult.Message);
+        }
+
+        var user = await _globals.GetCurrentUser();
+        if (user == null)
+        {
+            return BadRequest("Something went wrong.");
+        }
+
+        AppUser participant = null;
+        try
+        {
+            participant = await _userRepository.GetUserById(createGroupDto.ParticipantId);
+        } 
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        if (participant == null)
+        {
+            return BadRequest("Failed to get participant.");
+        }
+
+
+        Group group = new()
+        {
+            Name = createGroupDto.Name,
+            AdminId = user.Id,
+            Admin = user
+        };
+
+        _groupRepository.AddGroup(group);
+        if (!await _groupRepository.SaveAllAsync()) 
+        {
+            return BadRequest("Failed to create group");
+        }
+
+        List<UserGroup> participants =
+        [
+            new()
+            {
+                GroupId = group.Id,
+                Group = group,
+                UserId = user.Id,
+                User = user
+            },
+            new()
+            {
+                UserId = participant.Id,
+                User = participant,
+                GroupId = group.Id,
+                Group = group
+            }
+        ];
+
+        _groupRepository.AddGroupParticipants(participants);
+        if (!await _groupRepository.SaveAllAsync())
+        {
+            return BadRequest("Failed to add group participants");
+        }
+
+        return new GroupDto
+        {
+            Id = group.Id,
+            Name = group.Name
+        };
     }
 
 }

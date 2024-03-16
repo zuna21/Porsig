@@ -2,5 +2,5 @@
 
 public interface IGlobals
 {
-    string GetCurrentUsername();
+    Task<AppUser> GetCurrentUser();
 }

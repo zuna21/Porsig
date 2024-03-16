@@ -10,16 +10,26 @@ public class TokenService(
 ) : ITokenService
 {
     private readonly IConfiguration _configuration = configuration;
-    public string GenerateAccessToken(IEnumerable<Claim> claims)
+    public string GenerateAccessToken(AppUser user)
     {
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenString"]!));
-        var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-        var tokeOptions = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.Now.AddDays(1),
-            signingCredentials: signinCredentials
-        );
-        var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-        return tokenString;
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.NameId, user.UserName),
+        };
+
+        var creds = new SigningCredentials(
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenString"])),
+            SecurityAlgorithms.HmacSha512Signature);
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.Now.AddDays(1),
+            SigningCredentials = creds
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(token);
     }
 }

@@ -44,7 +44,7 @@ public class AccountController(
         return new AccountDto
         {
             Username = user.UserName,
-            Token = _tokenService.GenerateAccessToken(claims)
+            Token = _tokenService.GenerateAccessToken(user)
         };
     }
 
@@ -76,7 +76,7 @@ public class AccountController(
 
         return new AccountDto
         {
-            Token = _tokenService.GenerateAccessToken(claims),
+            Token = _tokenService.GenerateAccessToken(user),
             Username = user.UserName
         };
     }
