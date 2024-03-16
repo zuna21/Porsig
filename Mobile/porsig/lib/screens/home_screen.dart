@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:porsig/models/group/group_model.dart';
+import 'package:porsig/screens/group_screen.dart';
 import 'package:porsig/screens/login_screen.dart';
 import 'package:porsig/services/group_service.dart';
 import 'package:porsig/services/toastr_service.dart';
@@ -59,6 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _onGroup(GroupModel group) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (builder) => GroupScreen(group: group),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     for (var group in _groups)
                       ChatCard(
                         group: group,
+                        onGroup: (group) => _onGroup(group),
                       ),
                   ],
                 ),
