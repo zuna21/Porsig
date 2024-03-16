@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:porsig/globals.dart';
+import 'package:porsig/models/account/login_model.dart';
+import 'package:porsig/services/account_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,13 +13,29 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isVisible = false;
   final _formKey = GlobalKey<FormState>();
+  final AccountService _accountService = AccountService();
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
-  void _onSubmit() {
+  void _onSubmit() async {
     if (!_formKey.currentState!.validate()) return;
-    print(_username.text);
-    print(_password.text);
+    LoginModel loginModel =
+        LoginModel(username: _username.text, password: _password.text);
+    try {
+      final response = await _accountService.Login(loginModel);
+      print(response.token);
+    } catch (err) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              err.toString(),
+            ),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -92,8 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40)
-                  ),
+                      minimumSize: const Size.fromHeight(40)),
                   onPressed: _onSubmit,
                   child: const Text("Login"),
                 ),
