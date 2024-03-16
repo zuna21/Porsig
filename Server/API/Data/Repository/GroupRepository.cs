@@ -18,6 +18,11 @@ public class GroupRepository(
         _context.UserGroups.AddRange(userGroups);
     }
 
+    public async Task<Group> GetGroup(int id)
+    {
+        return await _context.Groups.FindAsync(id);
+    }
+
     public async Task<bool> SaveAllAsync()
     {
         return await _context.SaveChangesAsync() > 0;

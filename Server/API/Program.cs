@@ -31,12 +31,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole<int>>()
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-builder.Services.AddScoped<IGlobals, Globals>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
+builder.Services.AddScoped<IGlobals, Globals>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddScoped<IAccountValidator, AccountValidator>();
 builder.Services.AddScoped<IGroupValidator, GroupValidator>();
+builder.Services.AddScoped<IMessageValidator, MessageValidator>();
 
 builder.Services.AddAuthentication(options => {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

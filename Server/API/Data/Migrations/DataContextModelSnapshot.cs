@@ -101,7 +101,7 @@ namespace API.Data.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -128,12 +128,9 @@ namespace API.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("GroupId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RecipientId")
                         .HasColumnType("integer");
 
                     b.Property<int>("SenderId")
@@ -142,8 +139,6 @@ namespace API.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
-
-                    b.HasIndex("RecipientId");
 
                     b.HasIndex("SenderId");
 
@@ -324,12 +319,6 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.AppUser", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("API.AppUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
@@ -337,8 +326,6 @@ namespace API.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Group");
-
-                    b.Navigation("Recipient");
 
                     b.Navigation("Sender");
                 });
