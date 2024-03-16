@@ -1,5 +1,7 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
+
 namespace API;
 
 public class GroupRepository(
@@ -21,6 +23,19 @@ public class GroupRepository(
     public async Task<Group> GetGroup(int id)
     {
         return await _context.Groups.FindAsync(id);
+    }
+
+    public async Task<ICollection<GroupDto>> GetUserGroups(int userId)
+    {
+        return await _context.UserGroups
+            .Where(x => x.UserId == userId)
+            .OrderByDescending(x => x.Group.CreatedAt)
+            .Select(x => new GroupDto
+            {
+                Id = x.GroupId,
+                Name = x.Group.Name
+            })
+            .ToListAsync();
     }
 
     public async Task<bool> SaveAllAsync()

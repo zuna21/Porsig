@@ -70,4 +70,26 @@ public class MessagesController(
         };
     }
 
+    [HttpGet("get-messages/{groupId}")]
+    public async Task<ActionResult<MessageDto>> GetMessages(int groupId)
+    {
+        var user = await _globals.GetCurrentUser();
+        if (user == null)
+        {
+            return BadRequest("Failed to get user.");
+        }
+
+        ICollection<MessageDto> messages = [];
+        try
+        {
+            messages = await _messageRepository.GetMessages(groupId, user.Id);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        return Ok(messages);
+    }
+
 }

@@ -92,4 +92,26 @@ public class GroupsController(
         };
     }
 
+    [HttpGet("get-groups")]
+    public async Task<ActionResult<ICollection<GroupDto>>> GetGroups()
+    {
+        var user = await _globals.GetCurrentUser();
+        if (user == null)
+        {
+            return BadRequest("Failed to get user.");
+        }
+
+        ICollection<GroupDto> groups = [];
+        try
+        {
+            groups = await _groupRepository.GetUserGroups(user.Id);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        return Ok(groups);
+    }
+
 }
