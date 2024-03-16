@@ -32,21 +32,15 @@ public class GroupsController(
             return BadRequest("Something went wrong.");
         }
 
-        AppUser participant = null;
+        ICollection<AppUser> participants = [];
         try
         {
-            participant = await _userRepository.GetUserById(createGroupDto.ParticipantId);
+            participants = await _userRepository.GetUsersById(createGroupDto.ParticipantsId);
         } 
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
         }
-
-        if (participant == null)
-        {
-            return BadRequest("Failed to get participant.");
-        }
-
 
         Group group = new()
         {
@@ -61,25 +55,16 @@ public class GroupsController(
             return BadRequest("Failed to create group");
         }
 
-        List<UserGroup> participants =
-        [
-            new()
-            {
-                GroupId = group.Id,
-                Group = group,
-                UserId = user.Id,
-                User = user
-            },
-            new()
-            {
-                UserId = participant.Id,
-                User = participant,
-                GroupId = group.Id,
-                Group = group
-            }
-        ];
+        participants.Add(user);
+        var chatParticipants = participants.Select(x => new UserGroup
+        {
+            GroupId = group.Id,
+            Group = group,
+            UserId = x.Id,
+            User = x
+        }).ToList();
 
-        _groupRepository.AddGroupParticipants(participants);
+        _groupRepository.AddGroupParticipants(chatParticipants);
         if (!await _groupRepository.SaveAllAsync())
         {
             return BadRequest("Failed to add group participants");

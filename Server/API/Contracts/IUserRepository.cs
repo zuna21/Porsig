@@ -3,5 +3,5 @@
 public interface IUserRepository
 {
     Task<AppUser> GetUserByUsername(string username);
-    Task<AppUser> GetUserById(int id);
+    Task<ICollection<AppUser>> GetUsersById(ICollection<int> ids);
 }

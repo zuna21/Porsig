@@ -9,5 +9,5 @@ public class GroupDto
 public class CreateGroupDto
 {
     public string Name { get; set; }
-    public int ParticipantId { get; set; }
+    public ICollection<int> ParticipantsId { get; set; }
 }
