@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:porsig/models/group/group_model.dart';
 
 class ChatCard extends StatelessWidget {
-  const ChatCard({super.key});
+  const ChatCard({super.key, required this.group});
+
+  final GroupModel group;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class ChatCard extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "dksjfksds",
+          group.name!,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
               color: Theme.of(context).colorScheme.onPrimaryContainer),
         ),
