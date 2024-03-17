@@ -7,7 +7,8 @@ public class ChatHub : Hub
     public override Task OnConnectedAsync()
     {
         Console.WriteLine("**********");
-        Console.WriteLine(Context);
+        var something = Context;
+        Console.WriteLine(something);
         return base.OnConnectedAsync();
     }
 }
