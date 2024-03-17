@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:porsig/models/group/create_group_model.dart';
 import 'package:porsig/models/user/user_model.dart';
-import 'package:porsig/screens/group_screen.dart';
 import 'package:porsig/screens/home_screen.dart';
 import 'package:porsig/services/group_service.dart';
 import 'package:porsig/services/toastr_service.dart';
@@ -93,6 +92,7 @@ class _CreateGroupScreentState extends State<CreateGroupScreent> {
       _groupService.create(createGroupModel).then((value) {
         _toastrService.success(
             context, "Good", "Successfully cretaed ${value.name}");
+        _loadingCrete = false;
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (builder) => const HomeScreen(),
