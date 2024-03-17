@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:porsig/models/group/group_model.dart';
+import 'package:porsig/screens/create_group_screen.dart';
 import 'package:porsig/screens/group_screen.dart';
 import 'package:porsig/screens/login_screen.dart';
 import 'package:porsig/services/group_service.dart';
@@ -71,36 +72,43 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add_circle_outline),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.account_circle_outlined),
-            ),
-            IconButton(
-              onPressed: _onLogout,
-              icon: const Icon(Icons.logout),
-            )
-          ],
-        ),
-        body: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (var group in _groups)
-                      ChatCard(
-                        group: group,
-                        onGroup: (group) => _onGroup(group),
-                      ),
-                  ],
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => const CreateGroupScreent(),
                 ),
-              ));
+              );
+            },
+            icon: const Icon(Icons.add_circle_outline),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.account_circle_outlined),
+          ),
+          IconButton(
+            onPressed: _onLogout,
+            icon: const Icon(Icons.logout),
+          )
+        ],
+      ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  for (var group in _groups)
+                    ChatCard(
+                      group: group,
+                      onGroup: (group) => _onGroup(group),
+                    ),
+                ],
+              ),
+            ),
+    );
   }
 }

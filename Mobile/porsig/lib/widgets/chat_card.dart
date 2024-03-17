@@ -15,8 +15,8 @@ class ChatCard extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        height: 100,
-        margin: const EdgeInsets.all(10),
+        height: 70,
+        margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(5),
