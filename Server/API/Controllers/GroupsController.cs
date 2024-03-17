@@ -32,10 +32,12 @@ public class GroupsController(
             return BadRequest("Something went wrong.");
         }
 
+        var uniqueIds = createGroupDto.ParticipantsId.Distinct().ToList();
+
         ICollection<AppUser> participants = [];
         try
         {
-            participants = await _userRepository.GetUsersById(createGroupDto.ParticipantsId);
+            participants = await _userRepository.GetUsersById(uniqueIds);
         } 
         catch (Exception ex)
         {
