@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:porsig/globals.dart';
+import 'package:porsig/models/message/message_model.dart';
 import 'package:signalr_core/signalr_core.dart';
 
 class ChatHub {
   ChatHub();
   HubConnection? connection;
+  StreamController<MessageModel> messageStream = StreamController<MessageModel>();
 
   Future<void> startConnection() async {
     connection = HubConnectionBuilder()
@@ -35,4 +39,6 @@ class ChatHub {
     if (connection == null) return;
     await connection!.invoke('LeaveGroup', args: [groupName]);
   }
+
+
 }

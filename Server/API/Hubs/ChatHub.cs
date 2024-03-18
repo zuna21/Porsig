@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 
 namespace API;
 
-public class ChatHub(
-    IConfiguration configuration
-) : Hub
+public class ChatHub : Hub
 {
-    private readonly IConfiguration _configuration = configuration;
 
     public async Task JoinGroup(string groupName)
     {
