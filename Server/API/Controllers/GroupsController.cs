@@ -75,7 +75,8 @@ public class GroupsController(
         return new GroupDto
         {
             Id = group.Id,
-            Name = group.Name
+            Name = group.Name,
+            UniqueName = group.UniqueName
         };
     }
 

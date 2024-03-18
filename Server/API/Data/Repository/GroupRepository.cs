@@ -33,7 +33,8 @@ public class GroupRepository(
             .Select(x => new GroupDto
             {
                 Id = x.GroupId,
-                Name = x.Group.Name
+                Name = x.Group.Name,
+                UniqueName = x.Group.UniqueName
             })
             .ToListAsync();
     }

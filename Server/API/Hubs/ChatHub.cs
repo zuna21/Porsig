@@ -4,11 +4,13 @@ namespace API;
 
 public class ChatHub : Hub
 {
-    public override Task OnConnectedAsync()
+    public async Task AddToGroup(string groupName)
     {
-        Console.WriteLine("**********");
-        var something = Context;
-        Console.WriteLine(something);
-        return base.OnConnectedAsync();
+        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+    }
+
+    public async Task RemoveFromGroup(string groupName)
+    {
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
     }
 }
