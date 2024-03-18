@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:porsig/hubs/chat_hub.dart';
 import 'package:porsig/models/group/group_model.dart';
 import 'package:porsig/screens/create_group_screen.dart';
 import 'package:porsig/screens/group_screen.dart';
@@ -19,6 +20,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GroupService _groupService = const GroupService();
   final ToastrService _toastr = const ToastrService();
+  final ChatHub _chatHub = ChatHub();
 
   bool _isLoading = true;
   List<GroupModel> _groups = [];
@@ -26,7 +28,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _startChatConnection();
     _getGroups();
+  }
+
+  void _startChatConnection() {
+    _chatHub.startConnection();
   }
 
   void _onLogout() async {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:porsig/hubs/chat_hub.dart';
 import 'package:porsig/models/group/group_model.dart';
 import 'package:porsig/models/message/create_message_model.dart';
@@ -29,12 +28,18 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   void initState() {
     super.initState();
-    _startChatConnection();
+    _joinGroup();
     _getMessages();
   }
 
-  void _startChatConnection() {
-    _chatHub.startConnection();
+  void _joinGroup() {
+    if (widget.group.uniqueName == null) return;
+    _chatHub.joinGroup(widget.group.uniqueName!);
+  }
+
+  void _leaveGroup() {
+    if (widget.group.uniqueName == null) return;
+    _chatHub.leaveGroup(widget.group.uniqueName!);
   }
 
   void _getMessages() async {
@@ -76,7 +81,7 @@ class _GroupScreenState extends State<GroupScreen> {
   void dispose() {
     _message.dispose();
     _scrollController.dispose();
-    _chatHub.stopConnection();
+    _leaveGroup();
     super.dispose();
   }
 

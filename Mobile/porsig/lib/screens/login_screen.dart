@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:porsig/hubs/chat_hub.dart';
 import 'package:porsig/models/account/account_model.dart';
 import 'package:porsig/models/account/login_model.dart';
 import 'package:porsig/screens/home_screen.dart';
@@ -19,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
   final ToastrService _toastr = const ToastrService();
+  final ChatHub _chatHub = ChatHub();
 
   bool _isVisible = false;
   bool _isLoading = true;
@@ -27,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    _chatHub.stopConnection();
     _checkIfLoggedIn();
   }
 

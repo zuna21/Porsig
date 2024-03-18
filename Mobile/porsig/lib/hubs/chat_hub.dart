@@ -12,6 +12,7 @@ class ChatHub {
             HttpConnectionOptions(
               logging: (level, message) => print(message),
             ))
+            .withAutomaticReconnect()
         .build();
 
     if (connection != null) {
@@ -23,5 +24,15 @@ class ChatHub {
     if (connection != null) {
       await connection!.stop();
     }
+  }
+
+  Future<void> joinGroup(String groupName) async {
+    if (connection == null) return;
+    await connection!.invoke('JoinGroup', args: [groupName]);
+  }
+
+  Future<void> leaveGroup(String groupName) async {
+    if (connection == null) return;
+    await connection!.invoke('LeaveGroup', args: [groupName]);
   }
 }

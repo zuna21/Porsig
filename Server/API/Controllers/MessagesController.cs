@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace API;
 
@@ -8,13 +9,16 @@ public class MessagesController(
     IMessageValidator messageValidator,
     IGlobals globals,
     IMessageRepository messageRepository,
-    IGroupRepository groupRepository
+    IGroupRepository groupRepository,
+    IHubContext<ChatHub> chatHub
 ) : BaseController
 {
     private readonly IMessageValidator _messageValidator = messageValidator;
     private readonly IGlobals _globals = globals;
     private readonly IMessageRepository _messageRepository = messageRepository;
     private readonly IGroupRepository _groupRepository = groupRepository;
+    private readonly IHubContext<ChatHub> _chatHub = chatHub;
+
 
     [HttpPost("create/{groupId}")]
     public async Task<ActionResult<MessageDto>> Create(int groupId, CreateMessageDto createMessageDto)
@@ -60,6 +64,7 @@ public class MessagesController(
         {
             return BadRequest("Failed to create message.");
         }
+
 
         return new MessageDto
         {
