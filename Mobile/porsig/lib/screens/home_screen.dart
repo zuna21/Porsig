@@ -39,13 +39,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (!result) return;
     const storage = FlutterSecureStorage();
-    await storage.delete(key: "token");
-    if (!context.mounted) return;
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (builder) => const LoginScreen(),
-      ),
-    );
+    storage.delete(key: "token").then(
+          (value) => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (builder) => const LoginScreen(),
+            ),
+          ),
+        );
   }
 
   void _getGroups() async {
