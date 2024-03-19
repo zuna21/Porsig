@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:porsig/hubs/chat_hub.dart';
 import 'package:porsig/models/group/group_model.dart';
@@ -24,12 +26,14 @@ class _GroupScreenState extends State<GroupScreen> {
   final ChatHub _chatHub = ChatHub();
 
   List<MessageModel> messages = [];
+  StreamSubscription<MessageModel>? _messageStream;
 
   @override
   void initState() {
     super.initState();
     _joinGroup();
     _getMessages();
+    _receiveNewMessage();
   }
 
   void _joinGroup() {
@@ -40,6 +44,14 @@ class _GroupScreenState extends State<GroupScreen> {
   void _leaveGroup() {
     if (widget.group.uniqueName == null) return;
     _chatHub.leaveGroup(widget.group.uniqueName!);
+  }
+
+  void _receiveNewMessage() {
+    _messageStream = messageStream.stream.listen((newMessage) {
+      setState(() {
+        messages = [...messages, newMessage];
+      });
+    });
   }
 
   void _getMessages() async {
@@ -55,11 +67,17 @@ class _GroupScreenState extends State<GroupScreen> {
     });
   }
 
-  void _onSend() async {
+  void _onSend() {
     if (_message.text.trim().isEmpty) return;
     CreateMessageModel createMessage =
         CreateMessageModel(content: _message.text);
-    MessageModel newMessage;
+
+
+    _chatHub.sendMessage(widget.group.id!, createMessage);
+    _message.clear();
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(seconds: 1), curve: Curves.linear);
+
+    /* MessageModel newMessage;
     try {
       newMessage =
           await _messageService.create(widget.group.id!, createMessage);
@@ -74,13 +92,15 @@ class _GroupScreenState extends State<GroupScreen> {
       FocusManager.instance.primaryFocus?.unfocus();
       _scrollController.animateTo(_scrollController.position.maxScrollExtent,
           duration: const Duration(seconds: 1), curve: Curves.linear);
-    });
+    }); */
   }
+
 
   @override
   void dispose() {
     _message.dispose();
     _scrollController.dispose();
+    _messageStream!.cancel();
     _leaveGroup();
     super.dispose();
   }

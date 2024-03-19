@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace API;
 
@@ -9,15 +8,13 @@ public class MessagesController(
     IMessageValidator messageValidator,
     IGlobals globals,
     IMessageRepository messageRepository,
-    IGroupRepository groupRepository,
-    IHubContext<ChatHub> chatHub
+    IGroupRepository groupRepository
 ) : BaseController
 {
     private readonly IMessageValidator _messageValidator = messageValidator;
     private readonly IGlobals _globals = globals;
     private readonly IMessageRepository _messageRepository = messageRepository;
     private readonly IGroupRepository _groupRepository = groupRepository;
-    private readonly IHubContext<ChatHub> _chatHub = chatHub;
 
 
     [HttpPost("create/{groupId}")]
